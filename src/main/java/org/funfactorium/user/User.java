@@ -15,7 +15,7 @@ public class User {
     private long id;
 
     @Column(nullable = false, unique = true)
-    private String nickName;
+    private String userName;
 
     private String password;
 
@@ -27,8 +27,8 @@ public class User {
     public User() {
     }
 
-    public User(String nickName, String password, String email) {
-        this.nickName = nickName;
+    public User(String userName, String password, String email) {
+        this.userName = userName;
         this.password = password;
         this.email = email;
     }
@@ -41,12 +41,12 @@ public class User {
         this.id = id;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public Set<FunFact> getAuthoredFunFacts() {
