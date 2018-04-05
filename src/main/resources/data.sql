@@ -15,3 +15,10 @@ INSERT INTO fun_fact VALUES (1,' Arctic predators such as polar bears have a gre
 
 INSERT INTO fun_fact_topic_set VALUES (1, 1);
 INSERT INTO topic_fun_fact_set VALUES (1, 1);
+
+INSERT INTO topic VALUES (2, 'test');
+
+INSERT INTO fun_fact VALUES (2, 'test', 2, 'test', 1);
+
+INSERT INTO fun_fact_topic_set VALUES (2, 2);
+INSERT INTO topic_fun_fact_set VALUES (2, 2);
