@@ -21,7 +21,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <appName>funfactorium</appName>
         <full-artifact-name>target/${project.artifactId}-${project.version}.jar</full-artifact-name>
-        <testSourceDirectory>src/test/java</testSourceDirectory>
     </properties>
 
     <build>
@@ -57,6 +56,22 @@
                         <web>java $JAVA_OPTS -Dserver.port=$PORT -jar ${full-artifact-name}</web>
                     </processTypes>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.21.0</version>
+                <configuration>
+                    <testSourceDirectory>src/test/java</testSourceDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
