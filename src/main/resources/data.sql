@@ -9,16 +9,19 @@ INSERT INTO fun_fact VALUES (1,' Arctic predators such as polar bears have a gre
                                                'bears ability to store this vitamin that if you were to consume the ' ||
                                                'liver, you would more than likely succumb to the effects of ' ||
                                                'Hypervitaminosis A.  Put simply it would be too much vitamin A for your ' ||
-                                               'body to handle & and you would suffer from vitamin A poisoning. ' ||
-                                               'Symptoms of this include liver & bone damage, hair loss, double vision,' ||
+                                               'body to handle and you would suffer from vitamin A poisoning. ' ||
+                                               'Symptoms of this include liver and bone damage, hair loss, double vision,' ||
                                                ' vomiting and headaches.', 5, 'Polar bears', 1);
 
 INSERT INTO fun_fact_topic_set VALUES (1, 1);
 INSERT INTO topic_fun_fact_set VALUES (1, 1);
 
-INSERT INTO topic VALUES (2, 'test');
+INSERT INTO topic VALUES (2, 'Physics');
 
-INSERT INTO fun_fact VALUES (2, 'test', 2, 'test', 1);
+INSERT INTO fun_fact VALUES (2, 'Atoms are 99.9999% empty space. If you forced all the atoms together, removing ' ||
+                                'the space between them, a single teaspoon or sugar cube of the resulting mass would ' ||
+                                'weigh five billion tons; about ten times the weight of all the humans who are ' ||
+                                'currently alive. ', 2, 'Humans in a sugarcube', 1);
 
 INSERT INTO fun_fact_topic_set VALUES (2, 2);
 INSERT INTO topic_fun_fact_set VALUES (2, 2);
