@@ -1,11 +1,13 @@
 package org.funfactorium;
 
 import org.funfactorium.funfacts.FunFact;
+import org.funfactorium.funfacts.topics.Topic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Utils {
 
@@ -19,5 +21,16 @@ public class Utils {
             model.add(currentFunFacts);
         }
         return model;
+    }
+
+    public static Map<String, Object> buildJsonFromObject(FunFact randomFact) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("id", randomFact.getId());
+        result.put("title", randomFact.getTitle());
+        result.put("author", randomFact.getAuthor().getUserName());
+        result.put("topic", randomFact.getTopic().stream().map(Topic::getName).collect(Collectors.toList()));
+        result.put("description", randomFact.getDescription());
+        result.put("rating", randomFact.getRating());
+        return result;
     }
 }
