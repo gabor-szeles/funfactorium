@@ -10,8 +10,12 @@ import java.util.Map;
 @Service
 public class FunFactService {
 
+    private final FunFactRepository funFactRepository;
+
     @Autowired
-    private FunFactRepository funFactRepository;
+    public FunFactService(FunFactRepository funFactRepository) {
+        this.funFactRepository = funFactRepository;
+    }
 
     public List<FunFact> allFunFacts() {
         return funFactRepository.findAll();
