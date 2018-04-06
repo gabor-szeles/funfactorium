@@ -21,6 +21,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <appName>funfactorium</appName>
         <full-artifact-name>target/${project.artifactId}-${project.version}.jar</full-artifact-name>
+        <testSourceDirectory>src/test/java</testSourceDirectory>
     </properties>
 
     <build>
