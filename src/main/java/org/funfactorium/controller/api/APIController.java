@@ -21,4 +21,9 @@ public class APIController {
         List<Map<String, String>> params = funFactService.searchByTopic(topicId);
         return ResponseEntity.ok(params);
     }
+
+    @GetMapping(value = "/api/funfact")
+    public ResponseEntity getRandomFunFact() {
+        return ResponseEntity.ok(funFactService.getRandomFact());
+    }
 }
