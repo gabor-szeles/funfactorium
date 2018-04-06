@@ -1,6 +1,8 @@
 language: java
 deploy:
- provider: heroku
- api-key:
-  secure: $HEROKU_API_KEY
+  provider: heroku
+  api_key:
+    secure: he8E4Q7dQVZC5UHzNF+3/HDYkukdhzc/0uG77Kq5uB4i2up5nkdIOK49cmvGPTLK/VOpFoF9BvHpXpY3tNbLCU6GR/Y85Gj1gyoaQziD+MGLmFQDKLkk83PjJf8eP9GHAhZNV5BxH74WdY+3ndy6Rb7wAMyWlptKwNFs1uDL+f1E2J/EYb55l7FvS4VfXnbCW8uYwz0KhltWvZ6LfylQQt66DZhR36cRTBNrcq314OnHWdVPPprte8aDwLsRNwdHTJazsL5xQJo0JYsqr3xRTzt2wX5viAz4PlLCgjuLdCsMJRsup3AjLaYKz2ej8RPYwIOPHB5lRZGUookJSXcDwXm9RrijkH0CpQTbW3/fHg1r5vY0WERdj2fxjsX68KgZSs0PG8e/7NO2Hj0Q0vNn5vy4X6wZCF+flhGnbcyMdAy/yx3xZVJT+qg8JyY/JIsYaC90BIHtBNk+WiEj3gwcaSuLcLTs2wC1ett+8tMsDRbAwE7w5W1bFwg3dOoXdg0fedjfiJ57iKQ5zg4Xa4O6CSmjGVywsUmoeC/N16ZMhCHtyRmsE1EcVUXwIHNGBL3hurvmFv0xjuhFDkvqtpe+kblGYbi20ljfoWNDQ+ke0vZTkTowrNfwbeOeaYOefniYE5EkQsmnZoOTvIxyp1uN9JdINaU2vTu09mJlJI6iTHg=
+  on:
+    branch: deploy
 app: funfactory
