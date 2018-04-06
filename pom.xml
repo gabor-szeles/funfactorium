@@ -62,16 +62,10 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.21.0</version>
                 <configuration>
-                    <testSourceDirectory>src/test/java</testSourceDirectory>
+                    <includes>
+                        <include>**/*Test.*</include>
+                    </includes>
                 </configuration>
-                <executions>
-                    <execution>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

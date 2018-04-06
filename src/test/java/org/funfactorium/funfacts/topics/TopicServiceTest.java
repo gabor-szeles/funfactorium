@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
 class TopicServiceTest {
 
     private static TopicService testService;
