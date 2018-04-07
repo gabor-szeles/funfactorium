@@ -28,7 +28,7 @@ public class Utils {
         result.put("id", randomFact.getId());
         result.put("title", randomFact.getTitle());
         result.put("author", randomFact.getAuthor().getUserName());
-        result.put("topic", randomFact.getTopic().stream().map(Topic::getName).collect(Collectors.toList()));
+        result.put("topics", randomFact.getTopic().stream().map(Topic::getName).collect(Collectors.toList()));
         result.put("description", randomFact.getDescription());
         result.put("rating", randomFact.getRating());
         result.put("status", "FOUND");

@@ -2,7 +2,6 @@ package org.funfactorium.controller.api;
 
 import org.funfactorium.Utils;
 import org.funfactorium.funfacts.FunFactService;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +25,8 @@ public class APIController {
 
     @GetMapping(value = "/api/funfact")
     public ResponseEntity getRandomFunFact() {
-        return ResponseEntity.ok(funFactService.getRandomFact());
+        long randomId = funFactService.getRandomFunFactId();
+        return ResponseEntity.ok(funFactService.getFunFact(randomId));
     }
 
     @GetMapping(value = "/api/funfact/{factId}")

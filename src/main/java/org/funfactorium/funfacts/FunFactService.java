@@ -31,12 +31,10 @@ public class FunFactService {
         return result;
     }
 
-    public Map<String, Object> getRandomFact() {
+    public long getRandomFunFactId() {
         long minId = 1L;
         long maxId = funFactRepository.findMaxId();
-        long randomId = minId + (long) (Math.random() * (maxId - minId));
-        FunFact randomFact = funFactRepository.findById(randomId);
-        return Utils.buildJsonFromObject(randomFact);
+        return minId + (long) (Math.random() * (maxId - minId));
     }
 
     public Map<String, Object> getFunFact(long id) throws NullPointerException {
