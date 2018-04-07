@@ -15,4 +15,6 @@ public interface FunFactRepository extends JpaRepository<FunFact, Long> {
 
     @Query(value = "select max(f.id) from FunFact f")
     Long findMaxId();
+
+    List<FunFact> findAllByTopicSet_name(String topicName);
 }

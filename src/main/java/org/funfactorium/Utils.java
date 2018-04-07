@@ -1,6 +1,7 @@
 package org.funfactorium;
 
 import org.funfactorium.controller.api.FunFactNotFoundException;
+import org.funfactorium.controller.api.TopicNotFoundException;
 import org.funfactorium.funfacts.FunFact;
 import org.funfactorium.funfacts.topics.Topic;
 
@@ -24,7 +25,7 @@ public class Utils {
         return model;
     }
 
-    public static Map<String, Object> buildJsonFromObject(FunFact randomFact) {
+    public static Map<String, Object> buildSingleFactJson(FunFact randomFact) {
         Map<String, Object> result = new HashMap<>();
         result.put("id", randomFact.getId());
         result.put("title", randomFact.getTitle());
@@ -41,7 +42,26 @@ public class Utils {
         if(e instanceof FunFactNotFoundException) {
             result.put("status", "NOT FOUND");
             result.put("description", "No entry with this id was found in the database!");
+        } else if(e instanceof TopicNotFoundException) {
+            result.put("status", "NOT FOUND");
+            result.put("description", "No such topic was found in the database!");
         }
         return result;
+    }
+
+    public static List<Map<String,Object>> buildFactListJson(List<FunFact> allFactsForTopic) {
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        for (FunFact funFact:allFactsForTopic) {
+            Map<String, Object> entry = new HashMap<>();
+            entry.put("id", funFact.getId());
+            entry.put("title", funFact.getTitle());
+            entry.put("author", funFact.getAuthor().getUserName());
+            entry.put("topics", funFact.getTopic().stream().map(Topic::getName).collect(Collectors.toList()));
+            entry.put("description", funFact.getDescription());
+            entry.put("rating", funFact.getRating());
+            entry.put("status", "FOUND");
+            resultList.add(entry);
+        }
+        return resultList;
     }
 }

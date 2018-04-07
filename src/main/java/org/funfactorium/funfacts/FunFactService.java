@@ -3,7 +3,6 @@ package org.funfactorium.funfacts;
 import org.funfactorium.Utils;
 import org.funfactorium.controller.api.FunFactNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -43,6 +42,11 @@ public class FunFactService {
         if(targetFact==null) {
             throw new FunFactNotFoundException();
         }
-        return Utils.buildJsonFromObject(targetFact);
+        return Utils.buildSingleFactJson(targetFact);
+    }
+
+    public List<Map<String, Object>> getFunFactByTopicName(String properTopicName) {
+        List<FunFact> allFactsForTopic = funFactRepository.findAllByTopicSet_name(properTopicName);
+        return  Utils.buildFactListJson(allFactsForTopic);
     }
 }
