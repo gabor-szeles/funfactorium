@@ -1,8 +1,10 @@
 package org.funfactorium.controller.api;
 
+import org.funfactorium.Utils;
 import org.funfactorium.funfacts.FunFactService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,5 +27,14 @@ public class APIController {
     @GetMapping(value = "/api/funfact")
     public ResponseEntity getRandomFunFact() {
         return ResponseEntity.ok(funFactService.getRandomFact());
+    }
+
+    @GetMapping(value = "/api/funfact/{factId}")
+    public ResponseEntity getFunFact(@PathVariable("factId") long id) {
+        try {
+            return ResponseEntity.ok(funFactService.getFunFact(id));
+        } catch (NullPointerException e) {
+            return new ResponseEntity(Utils.buildApiErrorMessage(e), HttpStatus.NOT_FOUND);
+        }
     }
 }

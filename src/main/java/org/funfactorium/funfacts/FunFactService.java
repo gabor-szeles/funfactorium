@@ -1,9 +1,8 @@
 package org.funfactorium.funfacts;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.funfactorium.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -38,5 +37,10 @@ public class FunFactService {
         long randomId = minId + (long) (Math.random() * (maxId - minId));
         FunFact randomFact = funFactRepository.findById(randomId);
         return Utils.buildJsonFromObject(randomFact);
+    }
+
+    public Map<String, Object> getFunFact(long id) throws NullPointerException {
+        FunFact targetFact = funFactRepository.findById(id);
+        return Utils.buildJsonFromObject(targetFact);
     }
 }
