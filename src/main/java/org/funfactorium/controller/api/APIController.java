@@ -35,8 +35,12 @@ public class APIController {
 
     @GetMapping(value = "/api/funfact")
     public ResponseEntity getRandomFunFact() {
-        long randomId = funFactService.getRandomFunFactId();
-        return ResponseEntity.ok(funFactService.getFunFact(randomId));
+        try {
+            long randomId = funFactService.getRandomFunFactId();
+            return ResponseEntity.ok(funFactService.getFunFact(randomId));
+        } catch (NullPointerException e) {
+            return new ResponseEntity(Utils.buildApiErrorMessage(e), HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping(value = "/api/funfact/{factId}")

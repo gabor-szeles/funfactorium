@@ -31,7 +31,7 @@ public class FunFactService {
         return result;
     }
 
-    public long getRandomFunFactId() {
+    public long getRandomFunFactId() throws NullPointerException{
         long minId = 1L;
         long maxId = funFactRepository.findMaxId();
         return minId + (long) (Math.random() * (maxId - minId));

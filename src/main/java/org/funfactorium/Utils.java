@@ -45,6 +45,9 @@ public class Utils {
         } else if(e instanceof TopicNotFoundException) {
             result.put("status", "NOT FOUND");
             result.put("description", "No such topic was found in the database!");
+        } else if(e instanceof NullPointerException) {
+            result.put("status", "NOT FOUND");
+            result.put("description", "Database empty!");
         }
         return result;
     }
