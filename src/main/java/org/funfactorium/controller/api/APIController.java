@@ -39,13 +39,13 @@ public class APIController {
         }
     }
 
-   /* @GetMapping(value = "/api/funfact/topic/{topicName}")
+    @GetMapping(value = "/api/funfact/topic/{topicName}")
     public ResponseEntity getFunFactByTopic(@PathVariable("topicName") String topicName) {
         String properTopicName = StringUtils.capitalize(topicName.toLowerCase());
         try {
             return ResponseEntity.ok(funFactService.getFunFactByTopicName(properTopicName));
-        } catch (NullPointerException e) {
+        } catch (TopicNotFoundException e) {
             return new ResponseEntity(Utils.buildApiErrorMessage(e), HttpStatus.NOT_FOUND);
         }
-    }*/
+    }
 }
