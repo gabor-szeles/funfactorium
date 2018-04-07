@@ -1,5 +1,6 @@
 package org.funfactorium;
 
+import org.funfactorium.controller.api.FunFactNotFoundException;
 import org.funfactorium.funfacts.FunFact;
 import org.funfactorium.funfacts.topics.Topic;
 
@@ -37,7 +38,7 @@ public class Utils {
 
     public static Map<String, String> buildApiErrorMessage(RuntimeException e) {
         Map<String, String> result = new HashMap<>();
-        if(e instanceof NullPointerException) {
+        if(e instanceof FunFactNotFoundException) {
             result.put("status", "NOT FOUND");
             result.put("description", "No entry with this id was found in the database!");
         }

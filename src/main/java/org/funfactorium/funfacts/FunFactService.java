@@ -1,6 +1,7 @@
 package org.funfactorium.funfacts;
 
 import org.funfactorium.Utils;
+import org.funfactorium.controller.api.FunFactNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -37,8 +38,11 @@ public class FunFactService {
         return minId + (long) (Math.random() * (maxId - minId));
     }
 
-    public Map<String, Object> getFunFact(long id) throws NullPointerException {
+    public Map<String, Object> getFunFact(long id) throws FunFactNotFoundException {
         FunFact targetFact = funFactRepository.findById(id);
+        if(targetFact==null) {
+            throw new FunFactNotFoundException();
+        }
         return Utils.buildJsonFromObject(targetFact);
     }
 }

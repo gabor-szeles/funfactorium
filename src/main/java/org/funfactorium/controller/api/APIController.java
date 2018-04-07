@@ -5,6 +5,7 @@ import org.funfactorium.funfacts.FunFactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,8 +34,18 @@ public class APIController {
     public ResponseEntity getFunFact(@PathVariable("factId") long id) {
         try {
             return ResponseEntity.ok(funFactService.getFunFact(id));
-        } catch (NullPointerException e) {
+        } catch (FunFactNotFoundException e) {
             return new ResponseEntity(Utils.buildApiErrorMessage(e), HttpStatus.NOT_FOUND);
         }
     }
+
+   /* @GetMapping(value = "/api/funfact/topic/{topicName}")
+    public ResponseEntity getFunFactByTopic(@PathVariable("topicName") String topicName) {
+        String properTopicName = StringUtils.capitalize(topicName.toLowerCase());
+        try {
+            return ResponseEntity.ok(funFactService.getFunFactByTopicName(properTopicName));
+        } catch (NullPointerException e) {
+            return new ResponseEntity(Utils.buildApiErrorMessage(e), HttpStatus.NOT_FOUND);
+        }
+    }*/
 }
