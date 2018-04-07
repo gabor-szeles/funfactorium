@@ -1,8 +1,7 @@
 package org.funfactorium.funfacts;
 
 import org.funfactorium.Utils;
-import org.funfactorium.controller.api.FunFactNotFoundException;
-import org.funfactorium.controller.api.TopicNotFoundException;
+import org.funfactorium.funfacts.topics.TopicNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

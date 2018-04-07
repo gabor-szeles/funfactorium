@@ -1,7 +1,7 @@
 package org.funfactorium;
 
-import org.funfactorium.controller.api.FunFactNotFoundException;
-import org.funfactorium.controller.api.TopicNotFoundException;
+import org.funfactorium.funfacts.FunFactNotFoundException;
+import org.funfactorium.funfacts.topics.TopicNotFoundException;
 import org.funfactorium.funfacts.FunFact;
 import org.funfactorium.funfacts.topics.Topic;
 

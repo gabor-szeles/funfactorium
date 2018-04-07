@@ -1,7 +1,9 @@
 package org.funfactorium.controller.api;
 
 import org.funfactorium.Utils;
+import org.funfactorium.funfacts.FunFactNotFoundException;
 import org.funfactorium.funfacts.FunFactService;
+import org.funfactorium.funfacts.topics.TopicNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
