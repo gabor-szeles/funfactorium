@@ -31,6 +31,16 @@ public class Utils {
         result.put("topic", randomFact.getTopic().stream().map(Topic::getName).collect(Collectors.toList()));
         result.put("description", randomFact.getDescription());
         result.put("rating", randomFact.getRating());
+        result.put("status", "FOUND");
+        return result;
+    }
+
+    public static Map<String, String> buildApiErrorMessage(RuntimeException e) {
+        Map<String, String> result = new HashMap<>();
+        if(e instanceof NullPointerException) {
+            result.put("status", "NOT FOUND");
+            result.put("description", "No entry with this id was found in the database!");
+        }
         return result;
     }
 }
