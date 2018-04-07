@@ -4,6 +4,7 @@ import org.funfactorium.Utils;
 import org.funfactorium.funfacts.FunFactNotFoundException;
 import org.funfactorium.funfacts.FunFactService;
 import org.funfactorium.funfacts.topics.TopicNotFoundException;
+import org.funfactorium.funfacts.topics.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +17,14 @@ import java.util.Map;
 @RestController
 public class APIController {
 
+    private final FunFactService funFactService;
+    private final TopicService topicService;
+
     @Autowired
-    FunFactService funFactService;
+    public APIController(FunFactService funFactService, TopicService topicService) {
+        this.funFactService = funFactService;
+        this.topicService = topicService;
+    }
 
     @PostMapping(value = "/api/filter", consumes = "application/json")
     public ResponseEntity renderFilteredIndex(@RequestBody String id) {
@@ -39,6 +46,11 @@ public class APIController {
         } catch (FunFactNotFoundException e) {
             return new ResponseEntity(Utils.buildApiErrorMessage(e), HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping(value = "/api/funfact/topic")
+    public ResponseEntity displayAllTopics() {
+        return ResponseEntity.ok(topicService.getTopicMap());
     }
 
     @GetMapping(value = "/api/funfact/topic/{topicName}")
