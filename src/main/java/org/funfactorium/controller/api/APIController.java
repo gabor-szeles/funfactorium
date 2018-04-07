@@ -62,4 +62,13 @@ public class APIController {
             return new ResponseEntity(Utils.buildApiErrorMessage(e), HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping(value = "/api/funfact/topic/id/{topicId}")
+    public ResponseEntity getFunFactByTopicId(@PathVariable("topicId") long id) {
+        try {
+            return ResponseEntity.ok(funFactService.getFunFactByTopicId(id));
+        } catch (TopicNotFoundException e) {
+            return new ResponseEntity(Utils.buildApiErrorMessage(e), HttpStatus.NOT_FOUND);
+        }
+    }
 }

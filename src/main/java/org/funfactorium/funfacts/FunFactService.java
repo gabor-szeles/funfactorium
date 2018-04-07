@@ -52,4 +52,12 @@ public class FunFactService {
         }
         return  Utils.buildFactListJson(allFactsForTopic);
     }
+
+    public List<Map<String, Object>> getFunFactByTopicId(long id) throws TopicNotFoundException {
+        List<FunFact> allFactsForTopic = funFactRepository.findAllByTopicSet_id(id);
+        if(allFactsForTopic.size()==0) {
+            throw new TopicNotFoundException();
+        }
+        return  Utils.buildFactListJson(allFactsForTopic);
+    }
 }
