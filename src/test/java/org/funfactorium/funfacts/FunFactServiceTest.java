@@ -1,15 +1,12 @@
 package org.funfactorium.funfacts;
 
+import org.funfactorium.funfacts.topics.Topic;
+import org.funfactorium.funfacts.topics.TopicNotFoundException;
 import org.funfactorium.user.User;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -23,9 +20,14 @@ class FunFactServiceTest {
     private static List<FunFact> mockFunFactList;
     private static FunFact mockFunFact;
     private static User mockUser;
+    private static Topic mockTopic;
+    private static Set<Topic> mockTopicSet;
 
     @BeforeAll
     public static void setUpMocks() {
+        mockTopic = mock(Topic.class);
+        mockTopicSet = new HashSet<>();
+        mockTopicSet.add(mockTopic);
         mockRepository = mock(FunFactRepository.class);
         mockFunFactList = new ArrayList<>();
         mockFunFact = mock(FunFact.class);
@@ -36,21 +38,25 @@ class FunFactServiceTest {
 
     private void setUpMockReturns() {
         when(mockFunFact.getTitle()).thenReturn("test");
+        when(mockFunFact.getId()).thenReturn(1L);
         when(mockFunFact.getDescription()).thenReturn("test");
         when(mockFunFact.getAuthor()).thenReturn(mockUser);
+        when(mockFunFact.getTopic()).thenReturn(mockTopicSet);
+        when(mockFunFact.getRating()).thenReturn(3.0);
+        when(mockTopic.getName()).thenReturn("test");
         when(mockUser.getUserName()).thenReturn("test");
         when(mockRepository.findByTopicSetId(any(Long.class))).thenReturn(mockFunFactList);
     }
 
     @Test
-    public void testFindAllWorksCorrectly() {
+    public void testAllFunFactsWorksCorrectly() {
         when(mockRepository.findAll()).thenReturn(mockFunFactList);
         List<FunFact> testList = testService.allFunFacts();
         assertEquals(1, testList.size());
     }
 
     @Test
-    public void testFindAllCanReturnEmptyList() {
+    public void testAllFunFactsCanReturnEmptyList() {
         when(mockRepository.findAll()).thenReturn(new ArrayList<>());
         List<FunFact> testList = testService.allFunFacts();
         assertEquals(0, testList.size());
@@ -69,6 +75,63 @@ class FunFactServiceTest {
         when(mockRepository.findAll()).thenReturn(mockFunFactList);
         List<Map<String, String>> testList = testService.searchByTopic(0);
         assertEquals(1, testList.size());
+    }
+
+    @Test
+    public void testGetRandomFunFactIdWorksCorrectly() {
+        when(mockRepository.findMaxId()).thenReturn(10L);
+        Set<Long> testSet = new HashSet<>();
+        for (int i = 0; i < 10; i++) {
+            testSet.add(testService.getRandomFunFactId());
+        }
+        assertTrue(testSet.size()>1);
+    }
+
+    @Test
+    public void testGetRandomFunFactIdThrowsException() {
+        when(mockRepository.findMaxId()).thenReturn(null);
+        assertThrows(NullPointerException.class, ()->testService.getRandomFunFactId());
+    }
+
+    @Test
+    public void testGetFunFactWorksCorrectly() {
+        setUpMockReturns();
+        when(mockRepository.findById(any(Long.class))).thenReturn(mockFunFact);
+        Map<String, Object> testMap = testService.getFunFact(1);
+        assertEquals(7, testMap.keySet().size());
+    }
+
+    @Test
+    public void testGetFunFactThrowsException() {
+        when(mockRepository.findById(any(Long.class))).thenReturn(null);
+        assertThrows(FunFactNotFoundException.class, ()->testService.getFunFact(1));
+    }
+
+    @Test
+    public void testGetFunFactByTopicNameWorksCorrectly() {
+        setUpMockReturns();
+        when(mockRepository.findAllByTopicSet_name(any(String.class))).thenReturn(mockFunFactList);
+        List<Map<String, Object>> testList = testService.getFunFactByTopicName("test");
+        assertEquals("test", testList.get(0).get("title"));
+    }
+
+    @Test
+    public void testGetFunFactByTopicNameThrowsException() {
+        when(mockRepository.findAllByTopicSet_name(any(String.class))).thenReturn(new ArrayList<>());
+        assertThrows(TopicNotFoundException.class, ()->testService.getFunFactByTopicName("test"));
+    }
+
+    @Test
+    public void testGetFunFactByTopicIdWorksCorrectly() {
+        setUpMockReturns();
+        List<Map<String, Object>> testList = testService.getFunFactByTopicId(1);
+        assertEquals("test", testList.get(0).get("title"));
+    }
+
+    @Test
+    public void testGetFunFactByTopicIdThrowsException() {
+        when(mockRepository.findByTopicSetId(any(Long.class))).thenReturn(new ArrayList<>());
+        assertThrows(TopicNotFoundException.class, ()->testService.getFunFactByTopicId(1));
     }
 
 

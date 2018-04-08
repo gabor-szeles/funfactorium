@@ -1,11 +1,15 @@
 package org.funfactorium;
 
+import org.funfactorium.funfacts.FunFactNotFoundException;
+import org.funfactorium.funfacts.topics.TopicNotFoundException;
 import org.funfactorium.funfacts.FunFact;
+import org.funfactorium.funfacts.topics.Topic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Utils {
 
@@ -19,5 +23,48 @@ public class Utils {
             model.add(currentFunFacts);
         }
         return model;
+    }
+
+    public static Map<String, Object> buildSingleFactJson(FunFact randomFact) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("id", randomFact.getId());
+        result.put("title", randomFact.getTitle());
+        result.put("author", randomFact.getAuthor().getUserName());
+        result.put("topics", randomFact.getTopic().stream().map(Topic::getName).collect(Collectors.toList()));
+        result.put("description", randomFact.getDescription());
+        result.put("rating", randomFact.getRating());
+        result.put("status", "FOUND");
+        return result;
+    }
+
+    public static Map<String, String> buildApiErrorMessage(RuntimeException e) {
+        Map<String, String> result = new HashMap<>();
+        if(e instanceof FunFactNotFoundException) {
+            result.put("status", "NOT FOUND");
+            result.put("description", "No entry with this id was found in the database!");
+        } else if(e instanceof TopicNotFoundException) {
+            result.put("status", "NOT FOUND");
+            result.put("description", "No such topic was found in the database!");
+        } else if(e instanceof NullPointerException) {
+            result.put("status", "NOT FOUND");
+            result.put("description", "Database empty!");
+        }
+        return result;
+    }
+
+    public static List<Map<String,Object>> buildFactListJson(List<FunFact> allFactsForTopic) {
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        for (FunFact funFact:allFactsForTopic) {
+            Map<String, Object> entry = new HashMap<>();
+            entry.put("id", funFact.getId());
+            entry.put("title", funFact.getTitle());
+            entry.put("author", funFact.getAuthor().getUserName());
+            entry.put("topics", funFact.getTopic().stream().map(Topic::getName).collect(Collectors.toList()));
+            entry.put("description", funFact.getDescription());
+            entry.put("rating", funFact.getRating());
+            entry.put("status", "FOUND");
+            resultList.add(entry);
+        }
+        return resultList;
     }
 }
