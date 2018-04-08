@@ -54,7 +54,7 @@ public class FunFactService {
     }
 
     public List<Map<String, Object>> getFunFactByTopicId(long id) throws TopicNotFoundException {
-        List<FunFact> allFactsForTopic = funFactRepository.findAllByTopicSet_id(id);
+        List<FunFact> allFactsForTopic = funFactRepository.findByTopicSetId(id);
         if(allFactsForTopic.size()==0) {
             throw new TopicNotFoundException();
         }

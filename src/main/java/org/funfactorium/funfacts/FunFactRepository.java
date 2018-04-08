@@ -17,6 +17,4 @@ public interface FunFactRepository extends JpaRepository<FunFact, Long> {
     Long findMaxId();
 
     List<FunFact> findAllByTopicSet_name(String topicName);
-
-    List<FunFact> findAllByTopicSet_id(long id);
 }
