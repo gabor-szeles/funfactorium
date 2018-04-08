@@ -1,16 +1,13 @@
 package org.funfactorium;
 
 import org.funfactorium.funfacts.FunFact;
-import org.funfactorium.funfacts.FunFactNotFoundException;
 import org.funfactorium.funfacts.topics.Topic;
-import org.funfactorium.funfacts.topics.TopicNotFoundException;
 import org.funfactorium.user.User;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.*;
 

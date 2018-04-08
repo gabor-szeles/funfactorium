@@ -14,11 +14,15 @@ import java.util.List;
 @Controller
 public class FrontEndController {
 
-    @Autowired
-    private FunFactService funFactService;
+    private final FunFactService funFactService;
+
+    private final TopicService topicService;
 
     @Autowired
-    private TopicService topicService;
+    public FrontEndController(FunFactService funFactService, TopicService topicService) {
+        this.funFactService = funFactService;
+        this.topicService = topicService;
+    }
 
     @GetMapping(path = "/")
     public String renderIndex(Model model) {
