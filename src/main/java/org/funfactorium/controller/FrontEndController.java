@@ -28,6 +28,11 @@ public class FrontEndController {
         return "index";
     }
 
+    @GetMapping(path = "/api-docs")
+    public String renderApiDocumentation() {
+        return "api_documentation";
+    }
+
     //TODO
     @PostMapping(path = "/register")
     public String register() {
