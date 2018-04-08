@@ -1,6 +1,7 @@
 package org.funfactorium.funfacts;
 
 import org.funfactorium.funfacts.topics.Topic;
+import org.funfactorium.funfacts.topics.TopicNotFoundException;
 import org.funfactorium.user.User;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -104,6 +105,33 @@ class FunFactServiceTest {
     public void testGetFunFactThrowsException() {
         when(mockRepository.findById(any(Long.class))).thenReturn(null);
         assertThrows(FunFactNotFoundException.class, ()->testService.getFunFact(1));
+    }
+
+    @Test
+    public void testGetFunFactByTopicNameWorksCorrectly() {
+        setUpMockReturns();
+        when(mockRepository.findAllByTopicSet_name(any(String.class))).thenReturn(mockFunFactList);
+        List<Map<String, Object>> testList = testService.getFunFactByTopicName("test");
+        assertEquals("test", testList.get(0).get("title"));
+    }
+
+    @Test
+    public void testGetFunFactByTopicNameThrowsException() {
+        when(mockRepository.findAllByTopicSet_name(any(String.class))).thenReturn(new ArrayList<>());
+        assertThrows(TopicNotFoundException.class, ()->testService.getFunFactByTopicName("test"));
+    }
+
+    @Test
+    public void testGetFunFactByTopicIdWorksCorrectly() {
+        setUpMockReturns();
+        List<Map<String, Object>> testList = testService.getFunFactByTopicId(1);
+        assertEquals("test", testList.get(0).get("title"));
+    }
+
+    @Test
+    public void testGetFunFactByTopicIdThrowsException() {
+        when(mockRepository.findByTopicSetId(any(Long.class))).thenReturn(new ArrayList<>());
+        assertThrows(TopicNotFoundException.class, ()->testService.getFunFactByTopicId(1));
     }
 
 
