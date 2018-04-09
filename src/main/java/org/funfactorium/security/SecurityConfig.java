@@ -68,7 +68,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
 
-                .authorizeRequests().antMatchers("/api/**").authenticated()
+                .authorizeRequests().antMatchers("/api/**").permitAll()
                 .and().authorizeRequests().antMatchers("/api-docs").permitAll()
                 .and().authorizeRequests().antMatchers("/").permitAll()
                 .anyRequest().authenticated()
@@ -102,7 +102,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                                                 HttpServletResponse response,
                                                 Authentication authentication) throws IOException, ServletException {
 
-                String targetUrl = "/api/funfact";
+                String targetUrl = "/";
 
                 if (response.isCommitted()) {
                     log.debug("Response has already been committed. Unable to redirect to {}", targetUrl);
@@ -134,7 +134,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     LogoutSuccessHandler logoutSuccessHandler() {
         return (request, response, authentication) ->
-                response.setStatus(HttpStatus.OK.value());
+                response.sendRedirect("/");
+
     }
 
     @Bean
