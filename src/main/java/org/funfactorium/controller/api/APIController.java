@@ -75,4 +75,10 @@ public class APIController {
             return new ResponseEntity(Utils.buildApiErrorMessage(e), HttpStatus.NOT_FOUND);
         }
     }
+
+    @PostMapping(value = "/api/authenticate")
+    public ResponseEntity authenticateUser() {
+        System.out.println("Im running");
+        return ResponseEntity.ok("ok");
+    }
 }

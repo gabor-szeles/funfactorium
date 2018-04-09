@@ -43,17 +43,11 @@ public class FrontEndController {
         return "redirect:/";
     }
 
-    //TODO
-    @PostMapping(path = "/login")
-    public String login() {
-        return "redirect:/";
+    @GetMapping(value = "/login")
+    public String renderLoginPage() {
+        return "login_page";
     }
 
-    //TODO
-    @GetMapping(path = "/logout")
-    public String logout() {
-        return "redirect:/";
-    }
 
 
 }
