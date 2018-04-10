@@ -3,18 +3,24 @@ package org.funfactorium.controller;
 import org.funfactorium.funfacts.FunFact;
 import org.funfactorium.funfacts.FunFactService;
 import org.funfactorium.funfacts.topics.TopicService;
+import org.funfactorium.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class FrontEndController {
+    @Autowired
+    private UserService userService;
 
     private final FunFactService funFactService;
 
@@ -51,7 +57,17 @@ public class FrontEndController {
 
     //TODO
     @PostMapping(path = "/register")
-    public String register() {
+    public String register(@RequestParam String username,
+                           @RequestParam String password,
+                           @RequestParam String matchingpassword,
+                           @RequestParam String email
+                           ) {
+        Map <String, String> reqPar = new HashMap<>();
+        reqPar.put("username", username);
+        reqPar.put("password", password);
+        reqPar.put("matchingpassword", matchingpassword);
+        reqPar.put("email", email);
+        userService.register(reqPar);
         return "redirect:/";
     }
 
