@@ -89,21 +89,12 @@ public class APIController {
         return ResponseEntity.ok("ok");
     }
 
-    @PostMapping("/api/register")
-    public ResponseEntity registerUserAccount(@ModelAttribute("user") @Valid UserRegistrationDto userDto,
-                                      BindingResult result){
+    @PostMapping(value = "/api/check-username", consumes = "application/json")
+    public ResponseEntity checkUserName(@RequestBody String userName) {
+        boolean userExists = userService.userExistsByUserName(userName.split("=")[1]);
+        return ResponseEntity.ok(userExists);
 
-        User existing = userService.findByEmail(userDto.getEmail());
-        if (existing != null){
-            result.rejectValue("email", null, "There is already an account registered with that email");
-        }
-
-        if (result.hasErrors()){
-            return new ResponseEntity(result.getAllErrors(), HttpStatus.NOT_ACCEPTABLE);
-        }
-
-        userService.register(userDto);
-        return ResponseEntity.ok("Registered");
     }
+
 
 }

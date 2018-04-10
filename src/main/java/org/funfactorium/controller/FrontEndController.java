@@ -3,21 +3,21 @@ package org.funfactorium.controller;
 import org.funfactorium.funfacts.FunFact;
 import org.funfactorium.funfacts.FunFactService;
 import org.funfactorium.funfacts.topics.TopicService;
+import org.funfactorium.user.User;
 import org.funfactorium.user.UserRegistrationDto;
 import org.funfactorium.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 @Controller
 public class FrontEndController {
@@ -55,6 +55,25 @@ public class FrontEndController {
         }
         model.addAttribute("username", userName);
         return "api_documentation";
+    }
+
+    @PostMapping("/register")
+    public String registerUserAccount(@ModelAttribute("user") @Valid UserRegistrationDto userDto,
+                                              BindingResult result){
+
+        User existingName = userService.findByUserName(userDto.getUserName());
+        User existingEmail = userService.findByEmail(userDto.getEmail());
+        if (existingName != null || existingEmail != null){
+            result.rejectValue("Existing user", null, "There is already an account " +
+                                                                "registered with that username or email");
+        }
+
+        if (result.hasErrors()){
+            return result.getAllErrors().toString();
+        }
+
+        userService.register(userDto);
+        return "redirect:/";
     }
 
 
