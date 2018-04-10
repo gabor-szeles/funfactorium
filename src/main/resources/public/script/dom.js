@@ -8,6 +8,7 @@ $(document).ready(function () {
             $("#passwordField, #confirmPasswordField").keyup(events.checkPasswordsMatch);
             $("#userNameRegistrationField").keyup(events.checkUserNameExists);
             $("#emailField").keyup(events.checkEmailExists);
+            $("#loginButton").click(events.authenticateLogIn);
         }
 
     };
@@ -87,6 +88,11 @@ $(document).ready(function () {
                 $("#emailLabel").html("E-mail-address OK!").css("color", "green");
                 $("#register-button").prop("disabled", false);
             }
+        },
+
+        authenticateLogIn: function (event) {
+            event.preventDefault();
+            ajax.authenticateLogIn();
         }
     };
 
@@ -137,6 +143,20 @@ $(document).ready(function () {
                 },
                 error: function (response) {
                     console.log("checkEmail error:" + response.responseText);
+                }
+            });
+        },
+
+        authenticateLogIn: function () {
+            $.ajax({
+                type: "POST",
+                url: "/api/authenticate",
+                data: $("#loginForm").serialize(),
+                success: function () {
+                    location.reload();
+                },
+                error: function () {
+                    $("#loginLabel").html("User name or password incorrect!").css("color", "red");
                 }
             });
         }
