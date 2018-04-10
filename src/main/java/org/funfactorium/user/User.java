@@ -1,6 +1,8 @@
 package org.funfactorium.user;
 
 import org.funfactorium.funfacts.FunFact;
+import org.funfactorium.security.email.ValidateEmail;
+import org.funfactorium.security.password.PasswordMatches;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -8,6 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@PasswordMatches
 public class User {
 
     @Id
@@ -17,8 +20,14 @@ public class User {
     @Column(nullable = false, unique = true)
     private String userName;
 
+    @Column(nullable = false)
     private String password;
 
+    @Transient
+    private String matchingPassword;
+
+    @Column(nullable = false)
+    @ValidateEmail
     private String email;
 
     @OneToMany(mappedBy = "author")
@@ -27,9 +36,10 @@ public class User {
     public User() {
     }
 
-    public User(String userName, String password, String email) {
+    public User(String userName, String password, String email, String matchingPassword) {
         this.userName = userName;
         this.password = password;
+        this.matchingPassword = matchingPassword;
         this.email = email;
     }
 
@@ -67,5 +77,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getMatchingPassword() {
+        return matchingPassword;
+    }
+
+    public void setMatchingPassword(String matchingPassword) {
+        this.matchingPassword = matchingPassword;
     }
 }
