@@ -2,6 +2,7 @@ package org.funfactorium.security.password;
 
 
 import org.funfactorium.user.User;
+import org.funfactorium.user.UserRegistrationDto;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -14,7 +15,7 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
 
     @Override
     public boolean isValid(Object obj, ConstraintValidatorContext context) {
-        User user = (User) obj;
-        return user.getPassword().equals(user.getMatchingPassword());
+        UserRegistrationDto userDto = (UserRegistrationDto) obj;
+        return userDto.getPassword().equals(userDto.getMatchingPassword());
     }
 }

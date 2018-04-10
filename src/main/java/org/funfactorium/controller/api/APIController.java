@@ -5,12 +5,17 @@ import org.funfactorium.funfacts.FunFactNotFoundException;
 import org.funfactorium.funfacts.FunFactService;
 import org.funfactorium.funfacts.topics.TopicNotFoundException;
 import org.funfactorium.funfacts.topics.TopicService;
+import org.funfactorium.user.User;
+import org.funfactorium.user.UserRegistrationDto;
+import org.funfactorium.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -19,11 +24,13 @@ public class APIController {
 
     private final FunFactService funFactService;
     private final TopicService topicService;
+    private final UserService userService;
 
     @Autowired
-    public APIController(FunFactService funFactService, TopicService topicService) {
+    public APIController(FunFactService funFactService, TopicService topicService, UserService userService) {
         this.funFactService = funFactService;
         this.topicService = topicService;
+        this.userService = userService;
     }
 
     @PostMapping(value = "/api/filter", consumes = "application/json")
@@ -80,6 +87,23 @@ public class APIController {
     public ResponseEntity authenticateUser() {
         System.out.println("Im running");
         return ResponseEntity.ok("ok");
+    }
+
+    @PostMapping("/api/register")
+    public ResponseEntity registerUserAccount(@ModelAttribute("user") @Valid UserRegistrationDto userDto,
+                                      BindingResult result){
+
+        User existing = userService.findByEmail(userDto.getEmail());
+        if (existing != null){
+            result.rejectValue("email", null, "There is already an account registered with that email");
+        }
+
+        if (result.hasErrors()){
+            return new ResponseEntity("something something ERROR", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        userService.register(userDto);
+        return ResponseEntity.ok("Registered");
     }
 
 }

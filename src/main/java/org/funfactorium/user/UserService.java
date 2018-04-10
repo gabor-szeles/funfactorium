@@ -5,11 +5,14 @@ import org.funfactorium.security.password.PasswordMatchesValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +28,9 @@ public class UserService implements UserDetailsService{
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -54,13 +60,19 @@ public class UserService implements UserDetailsService{
 
     }
 
-    public void register(Map<String, String> requestParams){
-        String username = requestParams.get("username");
-        String password = requestParams.get("password");
-        String matchingPassword = requestParams.get("matchingpassword");
-        String email = requestParams.get("email");
-        User user = new User(username, password, email, matchingPassword);
+    public void register(UserRegistrationDto registeringUser){
+        System.out.println("running register method");
+        String username = registeringUser.getUserName();
+        String password = passwordEncoder.encode(registeringUser.getPassword());
+        String email = registeringUser.getEmail();
+        User user = new User(username, password, email);
         userRepository.save(user);
     }
 
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 }
+
+
