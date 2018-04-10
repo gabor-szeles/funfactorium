@@ -46,6 +46,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/**/*.{js,html}");
+        web.debug(true);
     }
 
     @Override
@@ -71,6 +72,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/api/**").permitAll()
                 .and().authorizeRequests().antMatchers("/api-docs").permitAll()
                 .and().authorizeRequests().antMatchers("/").permitAll()
+                .and().authorizeRequests().antMatchers("/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .rememberMe()
