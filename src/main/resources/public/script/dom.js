@@ -7,7 +7,7 @@ $(document).ready(function () {
             eventApplier.addEventToFilters();
             $("#passwordField, #confirmPasswordField").keyup(events.checkPasswordsMatch);
             $("#userNameRegistrationField").keyup(events.checkUserNameExists);
-
+            $("#emailField").keyup(events.checkEmailExists);
         }
 
     };
@@ -67,7 +67,26 @@ $(document).ready(function () {
                 $("#userNameRegLabel").html("Username OK!").css("color", "green");
                 $("#register-button").prop("disabled", false);
             }
+        },
 
+        checkEmailExists: function () {
+            let email = $("#emailField").val();
+            if(email.length >=5 && email.includes("@") && email.includes(".")) {
+                ajax.checkEmail(email);
+            } else {
+                $("#emailLabel").empty();
+                $("#register-button").prop("disabled", true);
+            }
+        },
+
+        emailStatus: function (response) {
+            if (response) {
+                $("#emailLabel").html("E-mail address already in database!").css("color", "red");
+                $("#register-button").prop("disabled", true);
+            }else {
+                $("#emailLabel").html("E-mail-address OK!").css("color", "green");
+                $("#register-button").prop("disabled", false);
+            }
         }
     };
 
@@ -104,7 +123,23 @@ $(document).ready(function () {
                         console.log("checkUserName error:" + response.responseText);
                     }
                 });
-            }
+            },
+
+        checkEmail: function (email) {
+            $.ajax({
+                type: "POST",
+                url: "/api/check-email",
+                dataType: "json",
+                data: {"email":email},
+                contentType: "application/json",
+                success: function (response) {
+                    events.emailStatus(response);
+                },
+                error: function (response) {
+                    console.log("checkEmail error:" + response.responseText);
+                }
+            });
+        }
 
     };
 

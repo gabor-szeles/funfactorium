@@ -93,7 +93,13 @@ public class APIController {
     public ResponseEntity checkUserName(@RequestBody String userName) {
         boolean userExists = userService.userExistsByUserName(userName.split("=")[1]);
         return ResponseEntity.ok(userExists);
+    }
 
+    @PostMapping(value = "/api/check-email", consumes = "application/json")
+    public ResponseEntity checkEmail(@RequestBody String email) {
+        boolean emailExists = userService.userExistsByEmail(email.split("=")[1]
+                                                            .replace("%40", "@"));
+        return ResponseEntity.ok(emailExists);
     }
 
 

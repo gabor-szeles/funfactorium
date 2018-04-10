@@ -81,6 +81,10 @@ public class UserService implements UserDetailsService{
     public boolean userExistsByUserName(String userName) {
         return userRepository.existsByUserName(userName);
     }
+
+    public boolean userExistsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
 }
 
 
