@@ -6,6 +6,7 @@ $(document).ready(function () {
             console.log("loaded");
             eventApplier.addEventToFilters();
             $("#passwordField, #confirmPasswordField").keyup(events.checkPasswordsMatch);
+            $("#userNameRegistrationField").keyup(events.checkUserNameExists);
 
         }
 
@@ -49,6 +50,24 @@ $(document).ready(function () {
                 $("#passwordLabel").html("Passwords match.").css("color", "green");
                 $("#register-button").prop("disabled", false);
             }
+        },
+
+        checkUserNameExists: function () {
+            let userName = $("#userNameRegistrationField").val();
+            if(userName.length>=5) {
+                ajax.checkUserName(userName);
+            }
+        },
+
+        userNameStatus: function (response) {
+            if (response) {
+                $("#userNameRegLabel").html("User already exists!").css("color", "red");
+                $("#register-button").prop("disabled", true);
+            }else {
+                $("#userNameRegLabel").html("Username OK!").css("color", "green");
+                $("#register-button").prop("disabled", false);
+            }
+
         }
     };
 
@@ -69,7 +88,23 @@ $(document).ready(function () {
                     console.log("refreshIndex error:" + response.responseText);
                 }
             });
-        }
+        },
+
+        checkUserName: function (userName) {
+                $.ajax({
+                    type: "POST",
+                    url: "/api/check-username",
+                    dataType: "json",
+                    data: {"userName":userName},
+                    contentType: "application/json",
+                    success: function (response) {
+                        events.userNameStatus(response);
+                    },
+                    error: function (response) {
+                        console.log("checkUserName error:" + response.responseText);
+                    }
+                });
+            }
 
     };
 
