@@ -99,7 +99,7 @@ public class APIController {
         }
 
         if (result.hasErrors()){
-            return new ResponseEntity("something something ERROR", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity(result.getAllErrors(), HttpStatus.NOT_ACCEPTABLE);
         }
 
         userService.register(userDto);
