@@ -5,6 +5,8 @@ $(document).ready(function () {
         init: function () {
             console.log("loaded");
             eventApplier.addEventToFilters();
+            $("#passwordField, #confirmPasswordField").keyup(events.checkPasswordsMatch);
+
         }
 
     };
@@ -14,7 +16,8 @@ $(document).ready(function () {
 
         addEventToFilters: function () {
             $(".topic").click(events.filter);
-        },
+        }
+
     };
 
 
@@ -33,6 +36,19 @@ $(document).ready(function () {
                                          <h5>${funfact.author}</h5>
                                          <p>${funfact.description}</p>`)
             })
+        },
+
+        checkPasswordsMatch: function () {
+            let password = $("#passwordField").val();
+            let confirmPassword = $("#confirmPasswordField").val();
+
+            if (password != confirmPassword) {
+                $("#passwordLabel").html("Passwords do not match!").css("color", "red");
+                $("#register-button").prop("disabled", true);
+            }else {
+                $("#passwordLabel").html("Passwords match.").css("color", "green");
+                $("#register-button").prop("disabled", false);
+            }
         }
     };
 
@@ -56,7 +72,6 @@ $(document).ready(function () {
         }
 
     };
-
 
     dom.init();
 

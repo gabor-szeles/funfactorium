@@ -48,14 +48,15 @@
                                 <p>Username</p>
                                 <input minlength="5" required="required" name="userName"/>
                                 <p>Password</p>
-                                <input minlength="5" required="required" type="password" name="password"/>
+                                <input id="passwordField" minlength="5" required="required" type="password" name="password"/>
                                 <p>Repeat Password </p>
-                                <input minlength="5" required="required" type="password" name="matchingPassword"/>
+                                <input id="confirmPasswordField" minlength="5" required="required" type="password" name="matchingPassword"/>
+                                <label th:target="confirmPassWordField" id="passwordLabel"></label>
                                 <p>Email</p>
                                 <input minlength="5" required="required" name="email"/>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn" type="submit">Register</button>
+                                <button class="btn" type="submit" id="register-button">Register</button>
                             </div>
                         </form>
                     </div>
