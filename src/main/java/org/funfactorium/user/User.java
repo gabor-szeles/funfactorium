@@ -11,10 +11,11 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @PasswordMatches
+@SequenceGenerator(name = "seq", initialValue = 2, allocationSize = 2)
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
     private long id;
 
     @Column(nullable = false, unique = true)
