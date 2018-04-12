@@ -8,17 +8,20 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@SequenceGenerator(name = "seq", initialValue = 2, allocationSize = 2)
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
     private long id;
 
     @Column(nullable = false, unique = true)
     private String userName;
 
+    @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     private String email;
 
     @OneToMany(mappedBy = "author")
@@ -68,4 +71,6 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
 }
+

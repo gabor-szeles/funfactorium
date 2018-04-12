@@ -11,20 +11,21 @@
     <div id="loginModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
-            <form action="/login" method="post">
+            <form id="loginForm">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Login</h4>
+                        <h4 id="loginTitle" class="modal-title">Login</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <p>Username</p>
+                        <label id="loginLabel"></label>
+                        <p>User name</p>
                         <input name="username" id="username"/>
                         <p>Password</p>
                         <input name="password" type="password" id="password"/>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn" type="submit">Login</button>
+                        <button id="loginButton" class="btn">Login</button>
                     </div>
                 </div>
             </form>
@@ -46,14 +47,19 @@
                             </div>
                             <div class="modal-body">
                                 <p>Username</p>
-                                <input minlength="5" required="required" name="username"/>
+                                <input id="userNameRegistrationField" minlength="5" required="required" name="userName"/>
+                                <label th:target="userNameRegistrationField" id="userNameRegLabel"></label>
                                 <p>Password</p>
-                                <input minlength="5" required="required" type="password" name="password"/>
+                                <input id="passwordField" minlength="5" required="required" type="password" name="password"/>
+                                <p>Repeat Password </p>
+                                <input id="confirmPasswordField" minlength="5" required="required" type="password" name="matchingPassword"/>
+                                <label th:target="confirmPassWordField" id="passwordLabel"></label>
                                 <p>Email</p>
-                                <input minlength="5" required="required" name="email"/>
+                                <input id="emailField" minlength="5" required="required" type="email" name="email"/>
+                                <label th:target="emailField" id="emailLabel"></label>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn" type="submit">Register</button>
+                                <button class="btn" type="submit" id="register-button">Register</button>
                             </div>
                         </form>
                     </div>

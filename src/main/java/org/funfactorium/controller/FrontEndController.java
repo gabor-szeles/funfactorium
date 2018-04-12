@@ -3,16 +3,26 @@ package org.funfactorium.controller;
 import org.funfactorium.funfacts.FunFact;
 import org.funfactorium.funfacts.FunFactService;
 import org.funfactorium.funfacts.topics.TopicService;
+import org.funfactorium.user.User;
+import org.funfactorium.user.UserRegistrationDto;
+import org.funfactorium.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
+
 
 @Controller
 public class FrontEndController {
+    @Autowired
+    private UserService userService;
 
     private final FunFactService funFactService;
 
@@ -25,33 +35,44 @@ public class FrontEndController {
     }
 
     @GetMapping(path = "/")
-    public String renderIndex(Model model) {
+    public String renderIndex(Principal principal, Model model) {
+        String userName = null;
+        if (principal!=null) {
+            userName = principal.getName();
+        }
         List<FunFact> allFactList = funFactService.allFunFacts();
         model.addAttribute("funfacts", allFactList);
+        model.addAttribute("username", userName);
         model.addAttribute("topics", topicService.allTopics());
         return "index";
     }
 
     @GetMapping(path = "/api-docs")
-    public String renderApiDocumentation() {
+    public String renderApiDocumentation(Principal principal, Model model) {
+        String userName = null;
+        if (principal!=null) {
+            userName = principal.getName();
+        }
+        model.addAttribute("username", userName);
         return "api_documentation";
     }
 
-    //TODO
-    @PostMapping(path = "/register")
-    public String register() {
-        return "redirect:/";
-    }
+    @PostMapping("/register")
+    public String registerUserAccount(@ModelAttribute("user") @Valid UserRegistrationDto userDto,
+                                              BindingResult result){
 
-    //TODO
-    @PostMapping(path = "/login")
-    public String login() {
-        return "redirect:/";
-    }
+        User existingName = userService.findByUserName(userDto.getUserName());
+        User existingEmail = userService.findByEmail(userDto.getEmail());
+        if (existingName != null || existingEmail != null){
+            result.rejectValue("Existing user", null, "There is already an account " +
+                                                                "registered with that username or email");
+        }
 
-    //TODO
-    @GetMapping(path = "/logout")
-    public String logout() {
+        if (result.hasErrors()){
+            return result.getAllErrors().toString();
+        }
+
+        userService.register(userDto);
         return "redirect:/";
     }
 

@@ -5,12 +5,17 @@ import org.funfactorium.funfacts.FunFactNotFoundException;
 import org.funfactorium.funfacts.FunFactService;
 import org.funfactorium.funfacts.topics.TopicNotFoundException;
 import org.funfactorium.funfacts.topics.TopicService;
+import org.funfactorium.user.User;
+import org.funfactorium.user.UserRegistrationDto;
+import org.funfactorium.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -19,11 +24,13 @@ public class APIController {
 
     private final FunFactService funFactService;
     private final TopicService topicService;
+    private final UserService userService;
 
     @Autowired
-    public APIController(FunFactService funFactService, TopicService topicService) {
+    public APIController(FunFactService funFactService, TopicService topicService, UserService userService) {
         this.funFactService = funFactService;
         this.topicService = topicService;
+        this.userService = userService;
     }
 
     @PostMapping(value = "/api/filter", consumes = "application/json")
@@ -75,4 +82,25 @@ public class APIController {
             return new ResponseEntity(Utils.buildApiErrorMessage(e), HttpStatus.NOT_FOUND);
         }
     }
+
+    @PostMapping(value = "/api/authenticate")
+    public ResponseEntity authenticateUser() {
+        System.out.println("Im running");
+        return ResponseEntity.ok("ok");
+    }
+
+    @PostMapping(value = "/api/check-username", consumes = "application/json")
+    public ResponseEntity checkUserName(@RequestBody String userName) {
+        boolean userExists = userService.userExistsByUserName(userName.split("=")[1]);
+        return ResponseEntity.ok(userExists);
+    }
+
+    @PostMapping(value = "/api/check-email", consumes = "application/json")
+    public ResponseEntity checkEmail(@RequestBody String email) {
+        boolean emailExists = userService.userExistsByEmail(email.split("=")[1]
+                                                            .replace("%40", "@"));
+        return ResponseEntity.ok(emailExists);
+    }
+
+
 }
