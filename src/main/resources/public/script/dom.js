@@ -5,9 +5,9 @@ $(document).ready(function () {
         init: function () {
             console.log("loaded");
             eventApplier.addEventToFilters();
-            $("#passwordField, #confirmPasswordField").keyup(events.checkPasswordsMatch);
-            $("#userNameRegistrationField").keyup(events.checkUserNameExists);
-            $("#emailField").keyup(events.checkEmailExists);
+            $("#passwordField, #confirmPasswordField").on("input", events.checkPasswordsMatch);
+            $("#userNameRegistrationField").on("input", events.checkUserNameExists);
+            $("#emailField").on("input", events.checkEmailExists);
             $("#loginButton").click(events.authenticateLogIn);
         }
 
