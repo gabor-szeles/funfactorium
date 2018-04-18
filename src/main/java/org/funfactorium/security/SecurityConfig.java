@@ -79,6 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
 
                 .authorizeRequests().antMatchers("/api/**").permitAll()
+                .and().authorizeRequests().antMatchers("/add-funfact").hasAuthority("ADD_FUNFACT")
                 .and().authorizeRequests().antMatchers("/api-docs").permitAll()
                 .and().authorizeRequests().antMatchers("/register").permitAll()
                 .and().authorizeRequests().antMatchers("/").permitAll()
