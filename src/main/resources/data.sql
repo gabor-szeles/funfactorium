@@ -1,4 +1,4 @@
-INSERT INTO users VALUES (1, 'admin@admin.ad', '$2a$10$hOsQ5pSZMpptQodE4bE0Vu58EJWgLA8vkxyTdu3OT2nKuFHdRmjqO', 'admin');
+INSERT INTO users VALUES (1, 'admin@admin.ad', '$2a$10$hOsQ5pSZMpptQodE4bE0Vu58EJWgLA8vkxyTdu3OT2nKuFHdRmjqO', 'ADMIN', 'admin');
 
 INSERT INTO topic VALUES (1, 'Biology');
 

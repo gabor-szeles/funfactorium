@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService{
@@ -43,8 +44,9 @@ public class UserService implements UserDetailsService{
             throw new UsernameNotFoundException(message);
         }
 
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("user"));
+        List<GrantedAuthority> authorities = user.getRole().getAuthorities()
+                                                .stream().map(SimpleGrantedAuthority::new)
+                                                    .collect(Collectors.toList());
 
 
         return new org.springframework.security.core.userdetails.User(
@@ -66,6 +68,7 @@ public class UserService implements UserDetailsService{
         String password = passwordEncoder.encode(registeringUser.getPassword());
         String email = registeringUser.getEmail();
         User user = new User(username, password, email);
+        user.setRole(UserRole.USER);
         userRepository.save(user);
     }
 

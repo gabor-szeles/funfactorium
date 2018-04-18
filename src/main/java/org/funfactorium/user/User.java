@@ -27,6 +27,9 @@ public class User {
     @OneToMany(mappedBy = "author")
     private Set<FunFact> authoredFunFacts = new HashSet<>();
 
+    @Enumerated(value = EnumType.STRING)
+    private UserRole role;
+
     public User() {
     }
 
@@ -72,5 +75,12 @@ public class User {
         this.email = email;
     }
 
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
 }
 
