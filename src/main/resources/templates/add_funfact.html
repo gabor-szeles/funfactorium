@@ -17,16 +17,16 @@
 
 <form id="addFunFactForm">
     <div class="form-group col-md-6">
-        <label for="addTitle">Title</label>
-        <input type="text" class="form-control" id="addTitle" placeholder="The title goes here">
+        <label for="addTitle" id="titleLabel">Title</label>
+        <input type="text" name="title" class="form-control" id="addTitle" minlength="10" maxlength="80"  placeholder="The title goes here" required>
     </div>
     <div class="form-group col-md-6">
-        <label for="addDescription">Description</label>
-        <textarea class="form-control" id="addDescription" placeholder="Please describe the fun fact here!"></textarea>
+        <label for="addDescription" id="descriptionLabel">Description</label>
+        <textarea class="form-control" name="description" id="addDescription"  placeholder="Please describe the fun fact here!" minlength="100" required></textarea>
     </div>
     <div class="form-group col-md-4">
-        <label for="addFactTopics">Topics</label>
-        <select id="addFactTopics"  multiple="multiple">
+        <label for="addFactTopics" id="topicLabel">Topics</label><br/>
+        <select name="topics" id="addFactTopics"  multiple="multiple" required>
             <option th:each="topic:${topics}" th:value="${topic.id}" th:text="${topic.name}">You should see the topics here</option>
         </select>
     </div>
