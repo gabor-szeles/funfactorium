@@ -10,6 +10,8 @@ import org.funfactorium.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,7 +39,7 @@ public class FrontEndController {
     }
 
     @GetMapping(path = "/")
-    public String renderIndex(Principal principal, Model model) {
+    public String renderIndex(Authentication aut, Principal principal, Model model) {
         String userName = null;
         if (principal!=null) {
             userName = principal.getName();
