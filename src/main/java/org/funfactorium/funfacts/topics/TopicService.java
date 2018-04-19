@@ -29,4 +29,8 @@ public class TopicService {
         }
         return result;
     }
+
+    public Topic getByTopicId(long topicId) {
+        return topicRepository.findOne(topicId);
+    }
 }
