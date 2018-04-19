@@ -1,21 +1,19 @@
 package org.funfactorium.controller.api;
 
 import org.funfactorium.Utils;
+import org.funfactorium.funfacts.FunFactDto;
 import org.funfactorium.funfacts.FunFactNotFoundException;
 import org.funfactorium.funfacts.FunFactService;
 import org.funfactorium.funfacts.topics.TopicNotFoundException;
 import org.funfactorium.funfacts.topics.TopicService;
-import org.funfactorium.user.User;
-import org.funfactorium.user.UserRegistrationDto;
 import org.funfactorium.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -100,6 +98,21 @@ public class APIController {
         boolean emailExists = userService.userExistsByEmail(email.split("=")[1]
                                                             .replace("%40", "@"));
         return ResponseEntity.ok(emailExists);
+    }
+
+    @PostMapping(value = "/api/add_funfact", consumes = "application/json")
+    public ResponseEntity addNewFunfact(@RequestBody FunFactDto funFactDto,
+                                                     Principal principal) {
+        if(Utils.checkForEmptyFields(funFactDto)) {
+            return new ResponseEntity("One or more fields unfilled", HttpStatus.NOT_ACCEPTABLE);
+        }
+        boolean existingTitle = funFactService.titleExists(funFactDto.getTitle());
+        if(existingTitle) {
+            return new ResponseEntity("Title exists in Database!", HttpStatus.CONFLICT);
+        }
+        String userName = principal.getName();
+        funFactService.addFunFact(funFactDto, userName);
+        return ResponseEntity.ok("OK");
     }
 
 

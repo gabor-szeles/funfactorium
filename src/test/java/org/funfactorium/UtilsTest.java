@@ -1,6 +1,7 @@
 package org.funfactorium;
 
 import org.funfactorium.funfacts.FunFact;
+import org.funfactorium.funfacts.FunFactDto;
 import org.funfactorium.funfacts.topics.Topic;
 import org.funfactorium.user.User;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,6 +20,7 @@ class UtilsTest {
 
     private static List<FunFact> mockFunFactList;
     private static FunFact mockFunFact;
+    private static FunFactDto mockFunFactDto;
     private static User mockUser;
     private static Topic mockTopic;
     private static Set<Topic> mockTopicSet;
@@ -26,6 +28,7 @@ class UtilsTest {
     @BeforeAll
     public static void setUp() {
         mockFunFact = mock(FunFact.class);
+        mockFunFactDto = mock(FunFactDto.class);
         mockFunFactList = new ArrayList<>();
         mockFunFactList.add(mockFunFact);
         mockUser = mock(User.class);
@@ -93,6 +96,31 @@ class UtilsTest {
         assertEquals(errorMsg, testMap.get("description"));
     }
 
+    @Test
+    public void testCheckForEmptyFieldsWorksCorrectly() {
+        when(mockFunFactDto.getTitle()).thenReturn("test");
+        when(mockFunFactDto.getDescription()).thenReturn("test");
+        when(mockFunFactDto.getTopics()).thenReturn(new ArrayList<>());
+        assertFalse(Utils.checkForEmptyFields(mockFunFactDto));
+    }
+
+    @ParameterizedTest
+    @CsvSource({", test",
+                "test,"})
+    public void testCheckForEmptyFieldsReturnsTrueForNullTitleAndDescription(String title, String description) {
+        when(mockFunFactDto.getTitle()).thenReturn(title);
+        when(mockFunFactDto.getDescription()).thenReturn(description);
+        when(mockFunFactDto.getTopics()).thenReturn(new ArrayList<>());
+        assertTrue(Utils.checkForEmptyFields(mockFunFactDto));
+    }
+
+    @Test
+    public void testCheckForEmptyFieldsReturnsTrueForNullArray() {
+        when(mockFunFactDto.getTitle()).thenReturn("test");
+        when(mockFunFactDto.getDescription()).thenReturn("test");
+        when(mockFunFactDto.getTopics()).thenReturn(null);
+        assertTrue(Utils.checkForEmptyFields(mockFunFactDto));
+    }
 
 
 

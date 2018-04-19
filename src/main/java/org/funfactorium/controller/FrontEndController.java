@@ -2,6 +2,7 @@ package org.funfactorium.controller;
 
 import org.funfactorium.funfacts.FunFact;
 import org.funfactorium.funfacts.FunFactService;
+import org.funfactorium.funfacts.topics.Topic;
 import org.funfactorium.funfacts.topics.TopicService;
 import org.funfactorium.user.User;
 import org.funfactorium.user.UserRegistrationDto;
@@ -9,6 +10,8 @@ import org.funfactorium.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
+import java.util.Locale;
 
 
 @Controller
@@ -35,7 +39,7 @@ public class FrontEndController {
     }
 
     @GetMapping(path = "/")
-    public String renderIndex(Principal principal, Model model) {
+    public String renderIndex(Authentication aut, Principal principal, Model model) {
         String userName = null;
         if (principal!=null) {
             userName = principal.getName();
@@ -74,6 +78,15 @@ public class FrontEndController {
 
         userService.register(userDto);
         return "redirect:/";
+    }
+
+    @GetMapping("/add-funfact")
+    public String renderAddFunfactPage(Principal principal, Model model) {
+        String userName = principal.getName();
+        List<Topic> allTopics = topicService.allTopics();
+        model.addAttribute("username", userName);
+        model.addAttribute("topics", allTopics);
+        return "add_funfact";
     }
 
 

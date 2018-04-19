@@ -1,7 +1,11 @@
 package org.funfactorium.funfacts;
 
 import org.funfactorium.Utils;
+import org.funfactorium.funfacts.topics.Topic;
 import org.funfactorium.funfacts.topics.TopicNotFoundException;
+import org.funfactorium.funfacts.topics.TopicService;
+import org.funfactorium.user.User;
+import org.funfactorium.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +15,14 @@ import java.util.*;
 public class FunFactService {
 
     private final FunFactRepository funFactRepository;
+    private final TopicService topicService;
+    private final UserService userService;
 
     @Autowired
-    public FunFactService(FunFactRepository funFactRepository) {
+    public FunFactService(FunFactRepository funFactRepository, TopicService topicService, UserService userService) {
         this.funFactRepository = funFactRepository;
+        this.topicService = topicService;
+        this.userService = userService;
     }
 
     public List<FunFact> allFunFacts() {
@@ -59,5 +67,22 @@ public class FunFactService {
             throw new TopicNotFoundException();
         }
         return  Utils.buildFactListJson(allFactsForTopic);
+    }
+
+    public boolean titleExists(String title) {
+        return funFactRepository.existsByTitle(title);
+    }
+
+    public void addFunFact(FunFactDto funFactDto, String userName) {
+        User author = userService.findByUserName(userName);
+        FunFact newFact = new FunFact(funFactDto.getTitle(), funFactDto.getDescription(), author, 3);
+        for (long topicId:funFactDto.getTopics()) {
+            Topic topic = topicService.getByTopicId(topicId);
+            newFact.getTopic().add(topic);
+            topic.getFunFacts().add(newFact);
+            newFact.getTopic().add(topic);
+            topic.getFunFacts().add(newFact);
+        }
+        funFactRepository.save(newFact);
     }
 }

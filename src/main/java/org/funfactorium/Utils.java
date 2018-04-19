@@ -1,15 +1,14 @@
 package org.funfactorium;
 
+import org.funfactorium.funfacts.FunFactDto;
 import org.funfactorium.funfacts.FunFactNotFoundException;
 import org.funfactorium.funfacts.topics.TopicNotFoundException;
 import org.funfactorium.funfacts.FunFact;
 import org.funfactorium.funfacts.topics.Topic;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Utils {
 
@@ -66,5 +65,12 @@ public class Utils {
             resultList.add(entry);
         }
         return resultList;
+    }
+
+    public static boolean checkForEmptyFields(FunFactDto funFactDto) {
+        return Stream.of(funFactDto.getTitle(),
+                            funFactDto.getDescription(),
+                                funFactDto.getTopics())
+                                    .anyMatch(Objects::isNull);
     }
 }

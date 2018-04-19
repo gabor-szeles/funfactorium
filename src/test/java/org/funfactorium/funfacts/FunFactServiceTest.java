@@ -2,29 +2,41 @@ package org.funfactorium.funfacts;
 
 import org.funfactorium.funfacts.topics.Topic;
 import org.funfactorium.funfacts.topics.TopicNotFoundException;
+import org.funfactorium.funfacts.topics.TopicService;
 import org.funfactorium.user.User;
+import org.funfactorium.user.UserService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class FunFactServiceTest {
 
     private static FunFactService testService;
+    private static TopicService mockTopicService;
+    private static UserService mockUserService;
     private static FunFactRepository mockRepository;
     private static List<FunFact> mockFunFactList;
     private static FunFact mockFunFact;
     private static User mockUser;
     private static Topic mockTopic;
     private static Set<Topic> mockTopicSet;
+    private static FunFactDto mockDto;
 
     @BeforeAll
     public static void setUpMocks() {
+        mockTopicService = mock(TopicService.class);
+        mockUserService = mock(UserService.class);
         mockTopic = mock(Topic.class);
         mockTopicSet = new HashSet<>();
         mockTopicSet.add(mockTopic);
@@ -33,7 +45,8 @@ class FunFactServiceTest {
         mockFunFact = mock(FunFact.class);
         mockFunFactList.add(mockFunFact);
         mockUser = mock(User.class);
-        testService = new FunFactService(mockRepository);
+        testService = new FunFactService(mockRepository, mockTopicService, mockUserService);
+        mockDto = mock(FunFactDto.class);
     }
 
     private void setUpMockReturns() {
@@ -133,6 +146,19 @@ class FunFactServiceTest {
         when(mockRepository.findByTopicSetId(any(Long.class))).thenReturn(new ArrayList<>());
         assertThrows(TopicNotFoundException.class, ()->testService.getFunFactByTopicId(1));
     }
+
+    @Test
+    public void testTitleExistsReturnsTrue() {
+        when(mockRepository.existsByTitle(any(String.class))).thenReturn(true) ;
+        assertTrue(testService.titleExists("test"));
+    }
+
+    @Test
+    public void testTitleExistsReturnsFalse() {
+        when(mockRepository.existsByTitle(any(String.class))).thenReturn(false) ;
+        assertFalse(testService.titleExists("test"));
+    }
+    
 
 
 }

@@ -8,10 +8,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@SequenceGenerator(name = "seq", initialValue = 5, allocationSize = 5)
 public class FunFact {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
     private long id;
 
     private String title;
@@ -30,11 +31,10 @@ public class FunFact {
     public FunFact() {
     }
 
-    public FunFact(String title, String description, User author, Topic topic, double rating) {
+    public FunFact(String title, String description, User author, double rating) {
         this.title = title;
         this.description = description;
         this.author = author;
-        this.topicSet.add(topic);
         this.rating = rating;
     }
 
