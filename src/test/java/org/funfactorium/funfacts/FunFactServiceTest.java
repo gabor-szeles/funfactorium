@@ -2,7 +2,9 @@ package org.funfactorium.funfacts;
 
 import org.funfactorium.funfacts.topics.Topic;
 import org.funfactorium.funfacts.topics.TopicNotFoundException;
+import org.funfactorium.funfacts.topics.TopicService;
 import org.funfactorium.user.User;
+import org.funfactorium.user.UserService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +18,8 @@ import static org.mockito.Mockito.when;
 class FunFactServiceTest {
 
     private static FunFactService testService;
+    private static TopicService mockTopicService;
+    private static UserService mockUserService;
     private static FunFactRepository mockRepository;
     private static List<FunFact> mockFunFactList;
     private static FunFact mockFunFact;
@@ -25,6 +29,8 @@ class FunFactServiceTest {
 
     @BeforeAll
     public static void setUpMocks() {
+        mockTopicService = mock(TopicService.class);
+        mockUserService = mock(UserService.class);
         mockTopic = mock(Topic.class);
         mockTopicSet = new HashSet<>();
         mockTopicSet.add(mockTopic);
@@ -33,7 +39,7 @@ class FunFactServiceTest {
         mockFunFact = mock(FunFact.class);
         mockFunFactList.add(mockFunFact);
         mockUser = mock(User.class);
-        testService = new FunFactService(mockRepository);
+        testService = new FunFactService(mockRepository, mockTopicService, mockUserService);
     }
 
     private void setUpMockReturns() {
