@@ -32,12 +32,12 @@ $(document).ready(function () {
             $("#titleLabel").html("Title").css("color", "black");
             $("#descriptionLabel").html("Description").css("color", "black");
             $("#topicLabel").html("Topics").css("color", "black");
-            if($("#addTitle").val()==="") {
-                $("#titleLabel").html("Please add a title!").css("color", "red");
+            if($("#addTitle").val()==="" || $("#addTitle").val().length<10) {
+                $("#titleLabel").html("Please add a title (Between 10 and 80 characters)").css("color", "red");
                 missing++;
             }
-            if($("#addDescription").val()==="") {
-                $("#descriptionLabel").html("Please add the description!").css("color", "red");
+            if($("#addDescription").val()==="" || $("#addDescription").val().length<100) {
+                $("#descriptionLabel").html("Please add the description! (More than 100 characters)").css("color", "red");
                 missing++;
             }
             if($("#addFactTopics").val().length===0) {
